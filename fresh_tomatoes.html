@@ -1,0 +1,223 @@
+
+<head>
+    <meta charset="utf-8">
+    <title>Ned McConnell's Fresh Tomatoes!</title>
+
+    <!-- Bootstrap 3 -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap-theme.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+    <style type="text/css" media="screen">
+        body {
+            padding-top: 80px;
+            font-family: 'Open Sans', sans-serif;
+        }
+        #trailer .modal-dialog {
+            margin-top: 200px;
+            width: 640px;
+            height: 480px;
+        }
+        .hanging-close {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            z-index: 9001;
+        }
+        #trailer-video {
+            width: 100%;
+            height: 100%;
+        }
+        .movie-tile {
+            margin-bottom: 20px;
+            padding-top: 20px;
+            -webkit-transition:background-color .25s;
+            transition:background-color .25s;
+        }
+        .movie-tile:hover {
+            background-color: #EEE;
+            cursor: pointer;
+        }
+        .scale-media {
+            padding-bottom: 56.25%;
+            position: relative;
+        }
+        .scale-media iframe {
+            border: none;
+            height: 100%;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 0;
+            background-color: white;
+        }
+
+        /* Added classes for customized display */
+        
+        .non-family-friendly:hover {
+            background-color: #FFBFBF;
+        }
+        .non-family-friendly-rating {
+            background-color: #FFBFBF!important;
+        }
+        .poster-container {
+            position:relative;
+        }
+        .rating {
+            font-size: 24px;
+            font-weight: bold;
+            width:75px;
+            height:40px;
+            border-radius: 10px;
+            background-color:#888;
+            color:#000;
+            opacity: .3;
+            position:absolute;
+            bottom:5px;
+            right:70px;
+            -webkit-transition:opacity .25s;
+            transition:opacity .25s;
+            line-height:40px;
+        }
+        .rating-hover {
+            opacity: .8
+        }
+        .legend-item {
+            width: 25px;
+            height:25px;
+            display: inline-block;
+        }
+        .legend {
+            margin-bottom: 20px;
+        }
+        .synopsis {
+            text-align:justify;
+        }
+        .detail {
+            font-size: 11px;
+            font-weight: bold;
+            font-family: sans-serif;
+            margin-bottom: 15px;
+        }
+
+        /* End customized css */
+    </style>
+    <script type="text/javascript" charset="utf-8">
+        // Pause the video when the modal is closed
+        $(document).on('click', '.hanging-close, .modal-backdrop, .modal', function (event) {
+            // Remove the src so the player itself gets removed, as this is the only
+            // reliable way to ensure the video stops playing in IE
+            $("#trailer-video-container").empty();
+        });
+        // Start playing the video whenever the trailer modal is opened
+        $(document).on('click', '.movie-tile', function (event) {
+            var trailerYouTubeId = $(this).attr('data-trailer-youtube-id')
+            var sourceUrl = 'http://www.youtube.com/embed/' + trailerYouTubeId + '?autoplay=1&html5=1';
+            $("#trailer-video-container").empty().append($("<iframe></iframe>", {
+              'id': 'trailer-video',
+              'type': 'text-html',
+              'src': sourceUrl,
+              'frameborder': 0
+            }));
+        });
+        // Animate in the movies when the page loads
+        $(document).ready(function () {
+          $('.movie-tile').hide().first().show("fast", function showNext() {
+            $(this).next("div").show("fast", showNext);
+          });
+        });
+
+        // Highlight the movie rating when hovering
+        $(document).on('mouseover', '.movie-tile', function(e) {
+            $(this).find('.rating').addClass('rating-hover');
+            if($(this).hasClass('non-family-friendly')) {
+              $(this).find('.rating').addClass('non-family-friendly-rating');
+            }
+        });
+
+        //Unhighlight the movie rating
+        $(document).on('mouseout', '.movie-tile', function(e) {
+            $(this).find('.rating').removeClass('rating-hover');
+            $(this).find('.rating').removeClass('non-family-friendly-rating');
+        });
+    </script>
+</head>
+
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <!-- Trailer Video Modal -->
+    <div class="modal" id="trailer">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <a href="#" class="hanging-close" data-dismiss="modal" aria-hidden="true">
+            <img src="https://lh5.ggpht.com/v4-628SilF0HtHuHdu5EzxD7WRqOrrTIDi_MhEG6_qkNtUK5Wg7KPkofp_VJoF7RS2LhxwEFCO1ICHZlc-o_=s0#w=24&h=24"/>
+          </a>
+          <div class="scale-media" id="trailer-video-container">
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Main Page Content -->
+    <div class="container">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="#">Ned McConnell's Fresh Tomatoes Movie Trailers</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <!--// Added legend to identify non-family-friendly movies prior to viewing preview //-->
+      <div class="legend">
+        <span class="legend-item non-family-friendly-rating">&nbsp;</span> - Indicates non-family-friendly movies. Parental discretion is advised.
+      </div>
+      
+<div class="col-md-6 col-lg-4 movie-tile text-center None" data-trailer-youtube-id="KYz2wyBy3kc" data-toggle="modal" data-target="#trailer">
+    <div class="poster-container">
+      <img src="https://www.movieposter.com/posters/archive/main/15/A70-7642" width="220" height="342">
+      <div class="rating">G</div>
+    </div>
+    <h2>Toy Story</h2>
+    <div class="detail">
+      Released: November 22, 1995
+      <br/>
+      Run Time: 81 minutes
+    </div>
+    <p class="synopsis">Woody (Tom Hanks), a good-hearted cowboy doll who belongs to a young boy named Andy (John Morris), sees his position as Andy's favorite toy jeopardized when his parents buy him a Buzz Lightyear (Tim Allen) action figure. Even worse, the arrogant Buzz thinks he's a real spaceman on a mission to return to his home planet. When Andy's family moves to a new house, Woody and Buzz must escape the clutches of maladjusted neighbor Sid Phillips (Erik von Detten) and reunite with their boy.</p>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center None" data-trailer-youtube-id="cRdxXPV9GNQ" data-toggle="modal" data-target="#trailer">
+    <div class="poster-container">
+      <img src="http://www.impawards.com/2009/posters/avatar_ver5_xlg.jpg" width="220" height="342">
+      <div class="rating">PG-13</div>
+    </div>
+    <h2>Avatar</h2>
+    <div class="detail">
+      Released: December 18, 2009
+      <br/>
+      Run Time: 178 minutes
+    </div>
+    <p class="synopsis">On the lush alien world of Pandora live the Na'vi, beings who appear primitive but are highly evolved. Because the planet's environment is poisonous, human/Na'vi hybrids, called Avatars, must link to human minds to allow for free movement on Pandora. Jake Sully (Sam Worthington), a paralyzed former Marine, becomes mobile again through one such Avatar and falls in love with a Na'vi woman (Zoe Saldana). As a bond with her grows, he is drawn into a battle for the survival of her world.</p>
+</div>
+
+<div class="col-md-6 col-lg-4 movie-tile text-center non-family-friendly" data-trailer-youtube-id="oiXdPolca5w" data-toggle="modal" data-target="#trailer">
+    <div class="poster-container">
+      <img src="http://www.impawards.com/1995/posters/usual_suspects_ver2.jpg" width="220" height="342">
+      <div class="rating">R</div>
+    </div>
+    <h2>The Usual Suspects</h2>
+    <div class="detail">
+      Released: August 16, 1995
+      <br/>
+      Run Time: 108 minutes
+    </div>
+    <p class="synopsis">"The greatest trick the devil ever pulled was convincing the world he didn't exist," says con man Kint (Kevin Spacey), drawing a comparison to the most enigmatic criminal of all time, Keyser Soze. Kint attempts to convince the feds that the mythic crime lord not only exists, but is also responsible for drawing Kint and his four partners into a multi-million dollar heist that ended with an explosion in San Pedro Harbor - leaving few survivors.</p>
+</div>
+
+    </div>
+  </body>
+</html>
